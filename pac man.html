@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pac-Man</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background-color: white; /* Arka planı beyaz yap */
+    }
+</style>
+</head>
+<body>
+<canvas id="pacmanCanvas"></canvas>
+
+<script>
+    // Canvas ve contexti al
+    const canvas = document.getElementById('pacmanCanvas');
+    const ctx = canvas.getContext('2d');
+
+    // Canvas boyutları
+    const width = canvas.width = 200;
+    const height = canvas.height = 200;
+
+    // Pac-Man çizme fonksiyonu
+    function drawPacman(x, y, radius, mouthAngle) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, mouthAngle * Math.PI, (2 - mouthAngle) * Math.PI); // Açık ağız açısını hesapla
+        ctx.lineTo(x, y); // Merkeze geri dön
+        ctx.closePath();
+        ctx.fillStyle = 'yellow'; // Sarı renkte doldur
+        ctx.fill();
+        ctx.strokeStyle = 'black'; // Siyah kenarlık
+        ctx.stroke();
+
+        // Tek göz
+        const eyeRadius = 5;
+        const eyeXOffset = 0;
+        const eyeYOffset = -25;
+        ctx.beginPath();
+        ctx.arc(x + eyeXOffset, y + eyeYOffset, eyeRadius, 0, 2 * Math.PI); // Göz
+        ctx.fillStyle = 'black';
+        ctx.fill();
+    }
+
+    // Pac-Man'ı çiz
+    drawPacman(width / 2, height / 2, 50, 0.2); // 0.2 oranında açık ağız
+
+</script>
+</body>
+</html>
