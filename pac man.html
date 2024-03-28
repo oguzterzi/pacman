@@ -1,53 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pac-Man</title>
-<style>
-    body {
-        margin: 0;
-        overflow: hidden;
-        background-color: white; /* Arka planı beyaz yap */
-    }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
 <body>
-<canvas id="pacmanCanvas"></canvas>
+    <canvas id="cnTuval" width="400" height="400" style="border:1px solid red">
+    <script>
+        function ciz() {
 
-<script>
-    // Canvas ve contexti al
-    const canvas = document.getElementById('pacmanCanvas');
-    const ctx = canvas.getContext('2d');
+    var tuval = document.getElementById("cnTuval");
+    var ctx = tuval.getContext("2d");
 
-    // Canvas boyutları
-    const width = canvas.width = 200;
-    const height = canvas.height = 200;
+    var fontBoyutu = 16;
+    ctx.font = fontBoyutu + "px Arial";
 
-    // Pac-Man çizme fonksiyonu
-    function drawPacman(x, y, radius, mouthAngle) {
-        ctx.beginPath();
-        ctx.arc(x, y, radius, mouthAngle * Math.PI, (2 - mouthAngle) * Math.PI); // Açık ağız açısını hesapla
-        ctx.lineTo(x, y); // Merkeze geri dön
-        ctx.closePath();
-        ctx.fillStyle = 'yellow'; // Sarı renkte doldur
-        ctx.fill();
-        ctx.strokeStyle = 'black'; // Siyah kenarlık
-        ctx.stroke();
+    metniKaydir(ctx, // Kapsamı parametre olarak gönder.
+        "Bizim buranın dağlarında karlar uzun süre kalırlar. Kara kara kargalar karlı iyi tarlalar ararlar. Bitti.",
+        10, // Metnin sol sınırı
+        20, // Menin başlayacağı dikey konum (y)
+        fontBoyutu * 1.5, // Satır yüksekliği (yazı tipi boyutu * 1.5 ile hesaplanır)
+        190); // Metnin sağ sınırı
 
-        // Tek göz
-        const eyeRadius = 5;
-        const eyeXOffset = 0;
-        const eyeYOffset = -25;
-        ctx.beginPath();
-        ctx.arc(x + eyeXOffset, y + eyeYOffset, eyeRadius, 0, 2 * Math.PI); // Göz
-        ctx.fillStyle = 'black';
-        ctx.fill();
+}
+ciz();
+
+function metniKaydir(ctx, metin, x, y, satirYuksekligi, maksimumGenislik) {
+    // Boşluğun genişliğini ölç.
+    var boslukGenisligi = ctx.measureText(" ").width;
+
+    // Metni kelimelere bölerek bir kelime dizisi oluştur.
+    var kelimeler = metin.split(" ");
+
+    // Değişkenleri oluştur va bazılarına başlangıç değerlerini ata.
+    var sonX = x, sonY = y, genislik;
+
+    // Kelime sayısınca bir döngü yap.
+    for (var i = 0; i < kelimeler.length; i++) {
+
+        // i. kelimenin genişliğini ölç.
+        genislik = ctx.measureText(kelimeler[i]).width;
+
+        // Metin yazılan son yatay pozisyona genişliği eklediğimizde maksimum
+        // genişliği aşıyorsa (yazı sağ sınırın dışına çıkacaksa)...
+        if (sonX + genislik > maksimumGenislik) {
+
+            // Bir satır alta geç (sonY değerini satır yüksekliği kadar arttır).
+            sonY += satirYuksekligi;
+
+            // Son yatay konumu metnin sol sınırına eşitle (satır başı yap)
+            sonX = x;
+
+        }
+        // Hesaplanan koordinatlara i. kelimeyi yaz.
+        ctx.fillText(kelimeler[i], sonX, sonY);
+
+        // Bir sonraki kelime için, son yatay konumu
+        // yazılan kelimenin boyu + bir boşluk genişliği kadar arttır.
+        sonX += genislik + boslukGenisligi;
+
     }
-
-    // Pac-Man'ı çiz
-    drawPacman(width / 2, height / 2, 50, 0.2); // 0.2 oranında açık ağız
-
-</script>
+}
+    </script>
 </body>
 </html>
+<script src="index.js"></script>
